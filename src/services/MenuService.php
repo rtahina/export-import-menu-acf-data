@@ -7,6 +7,8 @@
 
 namespace ExportImportMenuAcfData\Services;
 
+use ExportImportMenuAcfData\Models\Menu;
+
 /**
  * MenuService class
  *
@@ -18,12 +20,37 @@ class MenuService {
     /**
      * The get_all_menus function.
      *
-     * Retrieve the admin page template
+     * Get all the menus.
      *
-     * @return array Array of menus.
+     * @return Menu[]
      */
     public static function get_all_menus(): array {
-        // TODO get all menus.
-        return [];
+        $menus = [];
+        $all_menus = wp_get_nav_menus();
+        foreach ( $all_menus as $menu ) {
+            $menus[] = new Menu( $menu );
+        }
+        return $menus;
+    }
+
+    /**
+     * The display_menu_select_list function.
+     *
+     * Display all naivgation menus in a select box.
+     *
+     * @return void
+     */
+    public static function display_menu_select_list() {
+        $menus = self::get_all_menus();
+        ?>
+        <select name="" id="">
+            <option value="0">Select a menu</option>
+            <?php foreach ( $menus as $menu ) { ?>
+                <option value="<?php echo $menu->id ?>">
+                    <?php echo $menu->name ?>
+                </option>
+            <?php } ?>
+        </select>
+    <?php
     }
 }
