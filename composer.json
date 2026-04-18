@@ -1,0 +1,23 @@
+{
+    "name": "rtahina/export-import-menu-acf-data",
+    "description": "Exports and Imports the ACF data of a specific navigation menu",
+    "autoload": {
+        "psr-4": {
+            "ExportImportMenuAcfData\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tahina Rakototmanarivo",
+            "email": "to.tahina@gmail.com"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "3.0"
+    }
+}
