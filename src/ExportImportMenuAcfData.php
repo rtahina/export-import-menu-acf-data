@@ -61,14 +61,24 @@ class ExportImportMenuAcfData {
         register_activation_hook(
             EXPORT_IMPORT_MENU_ACF_DATA_PLUGIN_PATH . 'main.php',
             function () {
+                /**
+                 * Checks if either ACF or ACF Pro is installed and activated.
+                 * There is already the "Required plugins" in the main file header but we will insure 
+                 * with this hook that the plugin won't be activated without the required plugins.
+                 */
                 if ( 
-                    is_plugin_active( 'advanced-custom-fields/acf.php' ) 
-                    || is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) 
+                    ! is_plugin_active( 'advanced-custom-fields/acf.php' ) 
+                    && ! is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) 
                 ) {
-                    printf(
-                        '<div class="notice notice-error"><p>%s</p></div>',
-                        esc_html( 'The ACF plugin is required.' )
-                    );
+                    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+                    deactivate_plugins( EXPORT_IMPORT_MENU_ACF_DATA_PLUGIN_PATH . 'main.php' );
+
+                    wp_die(
+                        'This plugin requires ACF or ACF Pro to be installed and active.',
+                        'Dependency Error',
+                        ['back_link' => true]
+                    );                    
                 }
             }
         );

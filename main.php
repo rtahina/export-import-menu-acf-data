@@ -1,6 +1,7 @@
 <?php
 /**
  * Plugin Name:     Export / Import ACF Menu Data
+ * Requires Plugins: advanced-custom-fields
  * Plugin URI:      https://tahina.dev/
  * Description:     Exports and Imports the ACF data of a specific navigation menu. This plugin requires ACF or ACF Pro plugin to be installed and active.
  * Author:          Tahina R.
