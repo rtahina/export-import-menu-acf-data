@@ -1,0 +1,26 @@
+/**
+ * The admin styling file
+ *
+ * @package Export_Import_Acf_Menu_Data
+ */
+
+.eimad_tab-content {
+    padding-top: 2em;
+}
+
+/* Table headers */
+.eimad_tab-content table th {
+    text-align: left;
+}
+
+/* Forms, inputs and labels */
+.eimad_tab-content label {
+    font-weight: bold;
+}
+/* row */
+.eimad_tab-content .row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 1em;
+}

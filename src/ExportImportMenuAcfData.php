@@ -7,6 +7,8 @@
 
 namespace ExportImportMenuAcfData;
 
+use ExportImportMenuAcfData\Services\MenuService;
+
 /**
  * ExportImportMenuAcfData class
  *
@@ -45,7 +47,7 @@ class ExportImportMenuAcfData {
      * @return void.
      */
     public function run() {
-        $this->load_language( EXPORT_IMPORT_MENU_ACF_DATA_TEXT_DOMAIN );
+        $this->load_language( EIMAD_TEXT_DOMAIN );
         $this->hooks();
     }
 
@@ -57,9 +59,22 @@ class ExportImportMenuAcfData {
      * @return void.
      */
     protected function hooks() {
+
+        add_action('admin_init', function () {
+            // Handles exports
+            if ( isset( $_POST[ EIMAD_NONCE_NAME ] ) ) {
+                if ( ! wp_verify_nonce( $_POST[ EIMAD_NONCE_NAME ], EIMAD_NONCE_ACTION ) ) {
+                    wp_die( __( 'You are not allowed to submit this form', 'export-import-acf-menu-data' ) );
+                }
+
+                $menu_id = $_POST[ EIMAD_SELECTBOX_MENU_NAME ] ?? 0;
+                MenuService::export( $menu_id );
+            }
+        });
+
         // Runs once when the plugin is first activated.
         register_activation_hook(
-            EXPORT_IMPORT_MENU_ACF_DATA_PLUGIN_PATH . 'main.php',
+            EIMAD_PLUGIN_PATH . 'main.php',
             function () {
                 /**
                  * Checks if either ACF or ACF Pro is installed and activated.
@@ -72,7 +87,7 @@ class ExportImportMenuAcfData {
                 ) {
                     include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-                    deactivate_plugins( EXPORT_IMPORT_MENU_ACF_DATA_PLUGIN_PATH . 'main.php' );
+                    deactivate_plugins( EIMAD_PLUGIN_PATH . 'main.php' );
 
                     wp_die(
                         'This plugin requires ACF or ACF Pro to be installed and active.',
@@ -97,6 +112,17 @@ class ExportImportMenuAcfData {
                 );
             }
         );
+
+        add_action( 'admin_enqueue_scripts', function( $hook ) {
+            if( 'tools_page_export-import-menu-acf-data' === $hook ) {
+                wp_enqueue_style( 
+                    'export-import-menu-acf-data-admin-css', 
+                    plugin_dir_url( __FILE__ ) . 'Admin/style.css',
+                    [],
+                    filemtime( plugin_dir_path( __FILE__ ) . 'Admin/style.css' ) 
+                );
+            }
+        } );
     }
 
     /**
@@ -112,7 +138,7 @@ class ExportImportMenuAcfData {
             wp_die( 'You do not have permission to access this page.' );
         }
 
-        $template = plugin_dir_path( __FILE__ ) . 'admin/settings-page.php';
+        $template = plugin_dir_path( __FILE__ ) . 'Admin/settings-page.php';
         
         if ( file_exists( $template ) ) {
             include $template;
@@ -137,7 +163,7 @@ class ExportImportMenuAcfData {
 		load_plugin_textdomain(
 			$domain,
 			FALSE,
-			EXPORT_IMPORT_MENU_ACF_DATA_PLUGIN_PATH . 'languages'
+			EIMAD_PLUGIN_PATH . 'languages'
 		);
 	}
 }
