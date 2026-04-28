@@ -64,11 +64,17 @@ class ExportImportMenuAcfData {
             // Handles exports
             if ( isset( $_POST[ EIMAD_NONCE_NAME ] ) ) {
                 if ( ! wp_verify_nonce( $_POST[ EIMAD_NONCE_NAME ], EIMAD_NONCE_ACTION ) ) {
-                    wp_die( __( 'You are not allowed to submit this form', 'export-import-acf-menu-data' ) );
+                    wp_die( __( 'You are not allowed to submit this form.', 'export-import-acf-menu-data' ) );
                 }
 
-                $menu_id = $_POST[ EIMAD_SELECTBOX_MENU_NAME ] ?? 0;
-                MenuService::export( $menu_id );
+                if ( ! Utilities::current_user_can( 'manage_options' ) ) {
+                    wp_die( 
+                        __( 'You don\'t have the right to execute this action.',  'export-import-acf-menu-data' ) );
+                }
+
+                if ( isset ( $_POST[ EIMAD_SELECTBOX_MENU_NAME ] ) ) {
+                    MenuService::export();
+                }
             }
         });
 

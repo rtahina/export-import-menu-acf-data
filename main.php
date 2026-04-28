@@ -29,11 +29,12 @@ define( 'EIMAD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'EIMAD_TEXT_DOMAIN', 'export-import-acf-menu-data' );
 define( 'EIMAD_SELECTBOX_MENU_NAME', 'eimad_menu' );
 define( 'EIMAD_SELECTBOX_MENU_ID', 'eimad_menu' );
-define( 'EIMAD_INPUT_FILE_NAME', 'eimad_import_file' );
+define( 'EIMAD_INPUT_IMPORT_FILE_NAME', 'eimad_import_file' );
 define( 'EIMAD_INPUT_FILE_NAME_ID', 'eimad_import_file' );
 define( 'EIMAD_NONCE_ACTION', 'eimad_export_import_menu' );
 define( 'EIMAD_NONCE_NAME', 'eimad_export_import_menu_nonce' );
 define( 'EIMAD_EXPORT_ACTION_HOOK_NAME', 'eimad_export' );
+define( 'EIMAD_IMPORT_ACTION_HOOK_NAME', 'eimad_import' );
 
 // Autoload file.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {

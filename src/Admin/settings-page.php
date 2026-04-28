@@ -9,8 +9,17 @@ namespace ExportImportMenuAcfData\Services;
 
 // Selectbox CSS
 $css = [];
-
 $tab = $_GET[ 'tab' ] ?? 'default';
+
+if ( isset ( $_POST[ EIMAD_SELECTBOX_MENU_NAME ] ) && $_POST[ EIMAD_SELECTBOX_MENU_NAME ] === '0' ) {
+    wp_admin_notice(
+        __( 'Please choose a menu in the dropdown list.', 'export-import-acf-menu-data' ),
+        [
+            'type' => 'error',
+            'dismissible' => true
+        ]
+    );
+}
 ?>
 <div class="wrap">
     <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -41,7 +50,8 @@ $tab = $_GET[ 'tab' ] ?? 'default';
                 </div>
             </form>
         <?php } else if ( $tab === 'import' ) { ?>
-            Import your data
+            <p>Choose a file to import a menu and all its ACF field data.</p>
+            
         <?php } ?>
     </div>
 </div>

@@ -43,11 +43,21 @@ class MenuService {
      * @param array $css An array that contains one or multiple CSS classes. It will be used as "class" attribute
      * @return void
      */
-    public static function display_menu_select_list( string $name = '', string $id = '', array $css = [] ) {
+    public static function display_menu_select_list( 
+        string $name = '',
+        string $id = '',
+        array $css = []
+    ) {
         $menus = self::get_all_menus();
         $css_classes = join( ' ', $css );
+        // $required = 
         ?>
-        <select name="<?php echo esc_attr( $name ) ?>" id="<?php echo esc_attr( $id ) ?>" class="<?php echo esc_attr( $css_classes ) ?>">
+        <select 
+            name="<?php echo esc_attr( $name ) ?>" 
+            id="<?php echo esc_attr( $id ) ?>" 
+            class="<?php echo esc_attr( $css_classes ) ?>"
+            required
+        >
             <option value="0">Select a menu</option>
             <?php foreach ( $menus as $menu ) { ?>
                 <option value="<?php echo $menu->id ?>">
@@ -63,19 +73,15 @@ class MenuService {
      *
      * Export a menu with all its ACF data into a JSON file.
      *
-     * @param string $menu_name The name of the navigation menu to export.
      * @return void
      */
-    public static function export( int $menu_id ) {
-        if( $menu_id === 0 ) {
-            wp_admin_notice(
-                __( 'Please choose a menu.', 'export-import-acf-menu-data' ),
-                [
-                    'type' => 'error',
-                    'dismissible' => true
-                ]
-            );
-        }
+    public static function export() {
+        $menu_id = $_POST[ EIMAD_SELECTBOX_MENU_NAME ] ?? 0;
+        $menu_id = (int) $menu_id;
+
+        if( $menu_id === 0 ) 
+            return;
+
         $menu = get_term_by('id', $menu_id, 'nav_menu');
         $menu_name = $menu->slug ?? '';
         $nav_items = wp_get_nav_menu_items( $menu_id );
