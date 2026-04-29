@@ -109,4 +109,115 @@ class MenuService {
             exit;
         }
     }
+
+    /**
+     * The import function.
+     *
+     * Import a menu with all its ACF data from a JSON file.
+     *
+     * @return array
+     */
+    public static function import(): array {
+        if ( 
+            ! isset( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] )
+            ||  $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ][ 'tmp_name' ] === ''
+        ) {
+            wp_admin_notice(
+                __( 'Please, choose a file to import.', 'export-import-acf-menu-data' ),
+                [
+                    'type' => 'error',
+                    'dismissible' => true
+                ]
+            );
+
+            return [];
+        }
+        
+        $file = ! empty ( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] ) ? $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] : null;
+        $menu_name = ! empty ( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] ) 
+                    ? sanitize_text_field ( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] ) 
+                    : 'New Menu';
+        $override = isset( $_POST[ 'override_menu' ] );
+        $is_allowed = FileService::file_type_is_allowed( $file );
+        
+        if ( FALSE === $is_allowed ) {
+            wp_admin_notice(
+                __( 'This file type is not allowed. Please choose a JSON file to import.', 'export-import-acf-menu-data' ),
+                [
+                    'type' => 'error',
+                    'dismissible' => true
+                ]
+            );
+
+            return [];
+        }
+        
+        if ( TRUE === $is_allowed ) {
+            $json_data = file_get_contents( $file[ 'tmp_name' ] );
+            $data = json_decode( $json_data, true );
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+            
+            return [
+                    'type' => 'error',
+                    'message' => 'Invalid JSON data: ' . json_last_error_msg()
+                ];
+            }
+            
+            // Check JSON format
+            if ( ! self::check_json_format( $json_data ) ) {
+                return [
+                    'type' => 'error',
+                    'message' => 'Invalid JSON format'
+                ];
+            }
+
+            // Check if menu already exists and override is requested.
+            if ( 
+                is_nav_menu( $menu_name ) 
+                && FALSE === $override 
+            ) {
+                return [
+                    'success' => 'error',
+                    'message' => 'This menu already exists. Choose another name or allow the override option.'
+                ];
+            }
+
+            // Do the actual import.
+            $response = self::do_import( $data );
+
+            return $response;
+        }
+    }
+
+    public function check_json_format( string $json_data ): bool {
+        $data = json_decode( $json_data, true );
+
+        if ( json_last_error() !== JSON_ERROR_NONE ) return false;
+
+        if ( ! is_array( $data ) ) return false;
+
+        if ( count($data) === 0 ) return false;
+
+        $array_data = $data[ 0 ];
+        if ( ! array_key_exists( 'post', $array_data ) ) return false;
+
+        return true;
+    }
+
+    public function do_import( array $data ): array {
+        $data = ( array ) $data;
+
+        foreach ( $data as $row ) {
+            $post = $row->post;
+            $post_meta = $row->post_metas;
+
+
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Navigation menu imported'
+        ];
+    }
 }

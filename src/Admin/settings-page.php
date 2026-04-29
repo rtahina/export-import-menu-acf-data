@@ -64,17 +64,17 @@ if (
                 <input type="hidden" name="action" value="<?php echo EIMAD_IMPORT_ACTION_HOOK_NAME ?>">
                 <?php wp_nonce_field( EIMAD_NONCE_ACTION, EIMAD_NONCE_NAME ); ?>
                 <div class="row">
-                    <label for="menu-name">
+                    <label for="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>">
                         <span>Menu name*</span>
-                        <input type="text" id="new-menu-name" name="new-menu-name" required>
+                        <input type="text" id="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>" name="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>" required>
                     </label>
-                    <label for="menu-file">
+                    <label for="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>">
                         Choose a file*
-                        <input type="file" id="menu-file" name="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>" required>
+                        <input type="file" id="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>" name="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>" required>
                     </label>
-                    <label for="menu-override" class="reverse">
+                    <label for="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>" class="reverse">
                         Override if menu already exists
-                        <input type="checkbox" id="menu-override" name="override-menu">
+                        <input type="checkbox" id="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>" name="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>">
                     </label>
                     <input type="submit" name="eimad_import-menu" class="button button-primary" value="Import Menu">
                 </div>
