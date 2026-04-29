@@ -15,12 +15,25 @@
 
 /* Forms, inputs and labels */
 .eimad_tab-content label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-weight: bold;
 }
+
+.eimad_tab-content label.reverse {
+    display: flex;
+    flex-direction: row-reverse;
+    font-weight: bold;
+}
+
 /* row */
 .eimad_tab-content .row {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: flex-start;
-    align-items: center;
-    column-gap: 1em;
+    align-items: left;
+    row-gap: 1em;
+    margin-bottom: 0.5rem;
 }
