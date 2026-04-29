@@ -66,7 +66,7 @@ if (
                 <div class="row">
                     <label for="menu-name">
                         <span>Menu name*</span>
-                        <input type="text" id="menu-name" name="new_meu_name" required>
+                        <input type="text" id="new-menu-name" name="new-menu-name" required>
                     </label>
                     <label for="menu-file">
                         Choose a file*
@@ -74,7 +74,7 @@ if (
                     </label>
                     <label for="menu-override" class="reverse">
                         Override if menu already exists
-                        <input type="checkbox" id="menu-override" name="override_menu">
+                        <input type="checkbox" id="menu-override" name="override-menu">
                     </label>
                     <input type="submit" name="eimad_import-menu" class="button button-primary" value="Import Menu">
                 </div>

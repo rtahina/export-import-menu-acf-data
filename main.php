@@ -35,6 +35,8 @@ define( 'EIMAD_NONCE_ACTION', 'eimad_export_import_menu' );
 define( 'EIMAD_NONCE_NAME', 'eimad_export_import_menu_nonce' );
 define( 'EIMAD_EXPORT_ACTION_HOOK_NAME', 'eimad_export' );
 define( 'EIMAD_IMPORT_ACTION_HOOK_NAME', 'eimad_import' );
+define( 'EIMAD_INPUT_NEW_MENU_NAME', 'new_menu_name' );
+define( 'EIMAD_CHECKBOX_OVERRIDE', 'menu_override' );
 
 // Autoload file.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
