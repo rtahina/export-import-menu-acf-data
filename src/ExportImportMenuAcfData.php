@@ -61,7 +61,7 @@ class ExportImportMenuAcfData {
     protected function hooks() {
 
         add_action('admin_init', function () {
-            // Handles exports
+            // Handles exports.
             if ( isset( $_POST[ EIMAD_NONCE_NAME ] ) ) {
                 if ( ! wp_verify_nonce( $_POST[ EIMAD_NONCE_NAME ], EIMAD_NONCE_ACTION ) ) {
                     wp_die( __( 'You are not allowed to submit this form.', 'export-import-acf-menu-data' ) );
