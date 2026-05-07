@@ -27,7 +27,15 @@ if (
     isset ( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] ) 
     && $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ][ 'tmp_name' ] !== '' 
 ) {
-    MenuService::import();
+    $result = MenuService::import();
+    $message_type = TRUE === $result[ 'success' ] ? 'success' : 'error';
+    wp_admin_notice(
+        $result[ 'message' ],
+        [
+            'type' => $message_type,
+            'dismissible' => true
+        ]
+    );
 }
 ?>
 <div class="wrap">
@@ -42,7 +50,7 @@ if (
         </a>  
         <a 
             href="?page=export-import-menu-acf-data&tab=import" 
-            class="nav-tab <?php if( $tab === 'import' ) : ?>nav-tab-active<?php endif; ?>">Settings</a>  
+            class="nav-tab <?php if( $tab === 'import' ) : ?>nav-tab-active<?php endif; ?>">Import</a>  
     </nav> 
     <div class="eimad_tab-content">
         <?php if ( $tab === 'export' || $tab === 'default' ) { ?>
@@ -65,20 +73,16 @@ if (
                 <?php wp_nonce_field( EIMAD_NONCE_ACTION, EIMAD_NONCE_NAME ); ?>
                 <div class="row">
                     <label for="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>">
-                        <span>Menu name*</span>
+                        <span>Menu name</span>
                         <input type="text" id="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>" name="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>" required>
                     </label>
                     <label for="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>">
-                        Choose a file*
+                        Choose a file
                         <input type="file" id="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>" name="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>" required>
-                    </label>
-                    <label for="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>" class="reverse">
-                        Override if menu already exists
-                        <input type="checkbox" id="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>" name="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>">
                     </label>
                     <input type="submit" name="eimad_import-menu" class="button button-primary" value="Import Menu">
                 </div>
-                <small class="required">*Required fields</small>
+                <small class="required">All fields are required</small>
             </form>    
         <?php } ?>
     </div>
