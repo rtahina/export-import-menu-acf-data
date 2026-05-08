@@ -3,7 +3,7 @@ Contributors: r1lita
 Tags: menu, menus, export, import, acf, navigation 
 Requires at least: 6.9
 Tested up to: 6.9.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 Requires PHP: 8.0 or higher
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,5 +30,8 @@ Clone this repository or [download](https://github.com/rtahina/export-import-men
 
 == Changelog ==
 
-= 0.1 =
+= 0.1.0 =
 * Export and Import a given menu navigation
+
+= 0.2.0 =
+* Added option to allow override if menu already exists on import

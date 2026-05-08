@@ -10,6 +10,7 @@ namespace ExportImportMenuAcfData\Services;
 // Selectbox CSS
 $css = [];
 $tab = $_GET[ 'tab' ] ?? 'default';
+$menu_name = ! empty( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] ) ? sanitize_text_field( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] ) : '';
 
 // Show error message when no menu is selected
 if ( isset ( $_POST[ EIMAD_SELECTBOX_MENU_NAME ] ) && $_POST[ EIMAD_SELECTBOX_MENU_NAME ] === '0' ) {
@@ -73,16 +74,20 @@ if (
                 <?php wp_nonce_field( EIMAD_NONCE_ACTION, EIMAD_NONCE_NAME ); ?>
                 <div class="row">
                     <label for="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>">
-                        <span>Menu name</span>
-                        <input type="text" id="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>" name="<?php echo EIMAD_INPUT_NEW_MENU_NAME ?>" required>
+                        <span>Menu name*</span>
+                        <input type="text" id="<?php echo esc_attr( EIMAD_INPUT_NEW_MENU_NAME ) ?>" name="<?php echo esc_attr( EIMAD_INPUT_NEW_MENU_NAME ) ?>" value="<?php echo esc_html( $menu_name ) ?>" required>
                     </label>
                     <label for="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>">
-                        Choose a file
+                        Choose a file*
                         <input type="file" id="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>" name="<?php echo EIMAD_INPUT_IMPORT_FILE_NAME ?>" required>
+                    </label>
+                    <label for="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>" class="reverse">
+                        Override if menu already exists
+                        <input type="checkbox" id="<?php echo esc_attr( EIMAD_CHECKBOX_OVERRIDE ) ?>" name="<?php echo EIMAD_CHECKBOX_OVERRIDE ?>">
                     </label>
                     <input type="submit" name="eimad_import-menu" class="button button-primary" value="Import Menu">
                 </div>
-                <small class="required">All fields are required</small>
+                <small class="required">*Required fields</small>
             </form>    
         <?php } ?>
     </div>

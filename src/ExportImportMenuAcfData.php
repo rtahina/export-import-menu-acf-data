@@ -127,6 +127,14 @@ class ExportImportMenuAcfData {
                     [],
                     filemtime( plugin_dir_path( __FILE__ ) . 'Admin/style.css' ) 
                 );
+                
+                wp_enqueue_script(
+                    'export-import-menu-acf-data-admin-js',
+                    plugin_dir_url( __FILE__ ) . 'Admin/script.js',
+                    ['jquery'],
+                    filemtime( plugin_dir_path( __FILE__ ) . 'Admin/script.js' ),
+                    true
+                );
             }
         } );
     }

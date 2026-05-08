@@ -131,11 +131,12 @@ class MenuService {
             );
         }
 
-        $file       = ! empty( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] ) ? $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] : null;
-        $menu_name  = ! empty( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] )
+        $file           = ! empty( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] ) ? $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] : null;
+        $menu_name      = ! empty( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] )
                     ? sanitize_text_field( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] )
                     : 'New Menu';
-        $is_allowed = FileService::file_type_is_allowed( $file );
+        $allow_override = empty( $_POST[ EIMAD_CHECKBOX_OVERRIDE ] ) ? false : true;
+        $is_allowed     = FileService::file_type_is_allowed( $file );
 
         if ( false === $is_allowed ) {
             return array(
@@ -150,7 +151,7 @@ class MenuService {
 
             if ( json_last_error() !== JSON_ERROR_NONE ) {
                 return array(
-                    'type'    => 'error',
+                    'success' => false,
                     'message' => sprintf( __( 'Invalid JSON data: %s', 'export-import-acf-menu-data' ), json_last_error_msg() ),
                 );
             }
@@ -158,18 +159,30 @@ class MenuService {
             // Check JSON format
             if ( ! self::check_json_format( $json_data ) ) {
                 return array(
-                    'type'    => 'error',
+                    'success' => false,
                     'message' => __( 'Invalid JSON format', 'export-import-acf-menu-data' ),
                 );
             }
 
             // Check if menu already exists and override if requested.
             if ( is_nav_menu( $menu_name )
+                && false === $allow_override
             ) {
                 return array(
-                    'success' => 'error',
-                    'message' => sprintf( __( 'The menu "%s" already exists. Please, choose another name.', 'export-import-acf-menu-data' ), $menu_name ),
+                    'success' => false,
+                    'message' => sprintf( __( 'The menu "%s" already exists. Please, choose another name or allow override.', 'export-import-acf-menu-data' ), $menu_name ),
                 );
+            }
+
+            // Delete menu if override is allowed.
+            if ( $allow_override ) {
+                $response = self::delete_nav_menu( $menu_name );
+                if ( ! $response || $response instanceof WP_Error ) {
+                    return array(
+                        'success' => false,
+                        'message' => __( 'There was a problem deleting the menu', 'export-import-acf-menu-data' ),
+                    );
+                }
             }
 
             // Create menu
@@ -276,5 +289,21 @@ class MenuService {
             'success' => true,
             'message' => sprintf( __( '%d navigation menu items successfully imported.', 'export-import-acf-menu-data' ), $count ),
         );
+    }
+
+    /**
+     * The delete_nav_menu function.
+     *
+     * Delete a navigation menu.
+     *
+     * @return bool|WP_Error
+     */
+    public static function delete_nav_menu( string $menu_name ): bool|WP_Error {
+        $existing_menu = wp_get_nav_menu_object( $menu_name );
+        if ( $existing_menu ) {
+            return wp_delete_nav_menu( $existing_menu );
+        }
+
+        return false;
     }
 }
