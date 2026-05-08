@@ -9,7 +9,7 @@
  * Text Domain:     export-import-acf-menu-data
  * Domain Path:     /languages
  * Version:         0.1.0
- * Requires PHP:    8.2
+ * Requires PHP:    8.0 or higher
  *
  * @category WordPress_Plugin
  * @package  Export_Import_Acf_Menu_Data
