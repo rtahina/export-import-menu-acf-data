@@ -127,7 +127,7 @@ class MenuService {
         ) {
             return array(
                 'success' => false,
-                'message' => __( 'Please, choose a file to import.', 'export-import-acf-menu-data' ),
+                'message' => __( 'Please, choose a file to import.', 'export-import-menu-acf-data' ),
             );
         }
 
@@ -141,7 +141,7 @@ class MenuService {
         if ( false === $is_allowed ) {
             return array(
                 'success' => false,
-                'message' => __( 'This file type is not allowed. Please choose a JSON file to import.', 'export-import-acf-menu-data' ),
+                'message' => __( 'This file type is not allowed. Please choose a JSON file to import.', 'export-import-menu-acf-data' ),
             );
         }
 
@@ -152,7 +152,7 @@ class MenuService {
             if ( json_last_error() !== JSON_ERROR_NONE ) {
                 return array(
                     'success' => false,
-                    'message' => sprintf( __( 'Invalid JSON data: %s', 'export-import-acf-menu-data' ), json_last_error_msg() ),
+                    'message' => sprintf( __( 'Invalid JSON data: %s', 'export-import-menu-acf-data' ), json_last_error_msg() ),
                 );
             }
 
@@ -160,7 +160,7 @@ class MenuService {
             if ( ! self::check_json_format( $json_data ) ) {
                 return array(
                     'success' => false,
-                    'message' => __( 'Invalid JSON format', 'export-import-acf-menu-data' ),
+                    'message' => __( 'Invalid JSON format', 'export-import-menu-acf-data' ),
                 );
             }
 
@@ -170,7 +170,7 @@ class MenuService {
             ) {
                 return array(
                     'success' => false,
-                    'message' => sprintf( __( 'The menu "%s" already exists. Please, choose another name or allow override.', 'export-import-acf-menu-data' ), $menu_name ),
+                    'message' => sprintf( __( 'The menu "%s" already exists. Please, choose another name or allow override.', 'export-import-menu-acf-data' ), $menu_name ),
                 );
             }
 
@@ -180,7 +180,7 @@ class MenuService {
                 if ( ! $response || $response instanceof WP_Error ) {
                     return array(
                         'success' => false,
-                        'message' => __( 'There was a problem deleting the menu', 'export-import-acf-menu-data' ),
+                        'message' => __( 'There was a problem deleting the menu', 'export-import-menu-acf-data' ),
                     );
                 }
             }
@@ -245,7 +245,7 @@ class MenuService {
             if ( $post_id instanceof \WP_Error ) {
                 return array(
                     'success' => 'error',
-                    'message' => sprintf( __( 'There was an error creating "%s" menu item.', 'export-import-acf-menu-data' ), $title ),
+                    'message' => sprintf( __( 'There was an error creating "%s" menu item.', 'export-import-menu-acf-data' ), $title ),
                 );
             }
 
@@ -287,7 +287,7 @@ class MenuService {
 
         return array(
             'success' => true,
-            'message' => sprintf( __( '%d navigation menu items successfully imported.', 'export-import-acf-menu-data' ), $count ),
+            'message' => sprintf( __( '%d navigation menu items successfully imported.', 'export-import-menu-acf-data' ), $count ),
         );
     }
 
