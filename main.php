@@ -6,7 +6,7 @@
  * Description:     Exports and Imports the ACF data of a specific navigation menu. This plugin requires ACF or ACF Pro plugin to be installed and active.
  * Author:          Tahina R.
  * Author URI:      https://tahina.dev/
- * Text Domain:     export-import-acf-menu-data
+ * Text Domain:     export-import-menu-acf-data
  * Domain Path:     /languages
  * Version:         0.2.0
  * Requires PHP:    8.0 or higher
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use ExportImportMenuAcfData\ExportImportMenuAcfData;
 
 define( 'EIMAD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'EIMAD_TEXT_DOMAIN', 'export-import-acf-menu-data' );
+define( 'EIMAD_TEXT_DOMAIN', 'export-import-menu-acf-data' );
 define( 'EIMAD_SELECTBOX_MENU_NAME', 'eimad_menu' );
 define( 'EIMAD_SELECTBOX_MENU_ID', 'eimad_menu' );
 define( 'EIMAD_INPUT_IMPORT_FILE_NAME', 'eimad_import_file' );

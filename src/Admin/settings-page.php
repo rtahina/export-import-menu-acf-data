@@ -15,7 +15,7 @@ $menu_name = ! empty( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] ) ? sanitize_text_fiel
 // Show error message when no menu is selected
 if ( isset ( $_POST[ EIMAD_SELECTBOX_MENU_NAME ] ) && $_POST[ EIMAD_SELECTBOX_MENU_NAME ] === '0' ) {
     wp_admin_notice(
-        __( 'Please choose a menu in the dropdown list.', 'export-import-acf-menu-data' ),
+        __( 'Please choose a menu in the dropdown list.', 'export-import-menu-acf-data' ),
         [
             'type' => 'error',
             'dismissible' => true
