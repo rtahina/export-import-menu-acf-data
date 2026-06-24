@@ -2,8 +2,6 @@
 
 The **Export/Import Menu ACF Data** plugin is inpired by [Export Import Menus](https://wordpress.org/plugins/export-import-menus/). It allows you to export a given menu with all its attached ACF field values into a JSON file and then import it.
 
-This plugin is more of an experience than a real product for the time being thus it is not recommended to use it on a production environment.
-
 ## Requirements
 * PHP 8.0 or higher
 * WordPress 6.9 or higher

@@ -19,11 +19,22 @@ use ExportImportMenuAcfData\Services\MenuService;
 class ExportImportMenuAcfData {
 
     /** @var self $instance  */
-    private static $instance = null;
+    private static ?self $instance = null;
 
     // phpcs:disable Squiz.Commenting.FunctionComment.Missing
-    public function __construct() {
+    private function __construct() {
         // phpcs:enable
+    }
+
+    // phpcs:disable Squiz.Commenting.FunctionComment.Missing
+    private function __clone() {
+        // phpcs:enable
+    }
+
+    // phpcs:disable Squiz.Commenting.FunctionComment.Missing
+    public function __wakeup() {
+        // phpcs:enable
+        throw new \Exception('Cannot unserialize a singleton.');
     }
 
     /**
@@ -37,7 +48,7 @@ class ExportImportMenuAcfData {
         if ( null !== static::$instance ) {
             return static::$instance;
         } else {
-            static::$instance = new ExportImportMenuAcfData();
+            static::$instance = new self();
         }
 
         return static::$instance;
