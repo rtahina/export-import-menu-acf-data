@@ -8,8 +8,11 @@
  * Author URI:      https://tahina.dev/
  * Text Domain:     export-import-menu-acf-data
  * Domain Path:     /languages
- * Version:         0.2.1
- * Requires PHP:    8.0 or higher
+ * Version:         0.2.2
+ * Requires at least: 7.0
+ * Requires PHP: 8.0
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @category WordPress_Plugin
  * @package  Export_Import_Acf_Menu_Data
@@ -43,7 +46,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-// Bootstrap the plugin
+// Bootstrap the plugin.
 function eimad_bootstrap() {
     $app = ExportImportMenuAcfData::get_instance();
     $app->run();

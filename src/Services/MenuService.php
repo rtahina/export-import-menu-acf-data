@@ -97,9 +97,10 @@ class MenuService {
                 ++$count;
             }
 
-            $data = wp_json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
-            // TODO: current user time.
-            $filename = 'export_wp_menus_' . $menu_name . '_' . gmdate( 'd-m-Y-G-i-s' ) . '.json';
+            $data                = wp_json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
+            $current_time        = current_datetime();
+            $generation_datetime = $current_time->format( 'd-m-Y-G-i-s' );
+            $filename            = 'export_wp_menus_' . $menu_name . '_' . $generation_datetime . '.json';
             ob_clean();
             header( 'Content-Description: File Transfer' );
             header( 'Content-Type: application/json; charset=utf-8' );
@@ -123,7 +124,8 @@ class MenuService {
      */
     public static function import(): mixed {
         if ( ! isset( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] )
-            || $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ]['tmp_name'] === ''
+            && ! empty( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ]['tmp_name'] )
+            || '' === $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ]['tmp_name']
         ) {
             return array(
                 'success' => false,
@@ -133,7 +135,7 @@ class MenuService {
 
         $file           = ! empty( $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] ) ? $_FILES[ EIMAD_INPUT_IMPORT_FILE_NAME ] : null;
         $menu_name      = ! empty( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] )
-                    ? sanitize_text_field( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] )
+                    ? sanitize_text_field( wp_unslash( $_POST[ EIMAD_INPUT_NEW_MENU_NAME ] ) )
                     : 'New Menu';
         $allow_override = empty( $_POST[ EIMAD_CHECKBOX_OVERRIDE ] ) ? false : true;
         $is_allowed     = FileService::file_type_is_allowed( $file );
@@ -152,11 +154,12 @@ class MenuService {
             if ( json_last_error() !== JSON_ERROR_NONE ) {
                 return array(
                     'success' => false,
+                    /* translators: s: JSON error message */
                     'message' => sprintf( __( 'Invalid JSON data: %s', 'export-import-menu-acf-data' ), json_last_error_msg() ),
                 );
             }
 
-            // Check JSON format
+            // Check JSON format.
             if ( ! self::check_json_format( $json_data ) ) {
                 return array(
                     'success' => false,
@@ -170,6 +173,7 @@ class MenuService {
             ) {
                 return array(
                     'success' => false,
+                    /* translators: s: Menu name */
                     'message' => sprintf( __( 'The menu "%s" already exists. Please, choose another name or allow override.', 'export-import-menu-acf-data' ), $menu_name ),
                 );
             }
@@ -185,7 +189,7 @@ class MenuService {
                 }
             }
 
-            // Create menu
+            // Create menu.
             $menu_id = wp_create_nav_menu( $menu_name );
 
             // Do the actual import.
@@ -195,6 +199,14 @@ class MenuService {
         }
     }
 
+    /**
+     * The check_json_format function.
+     *
+     * Checks if $json_data has a valid format.
+     *
+     * @param string $json_data The JSON data.
+     * @return bool.
+     */
     public static function check_json_format( string $json_data ): bool {
         $data = json_decode( $json_data, true );
 
@@ -218,6 +230,15 @@ class MenuService {
         return true;
     }
 
+    /**
+     * The do_import function.
+     *
+     * Performs the import
+     *
+     * @param int   $menu_id The ID of the menu to import the data to.
+     * @param array $data The menu items data to import.
+     * @return array.
+     */
     public function do_import( int $menu_id, array $data ): array {
         $new_ids = array();
         $data    = (array) $data;
@@ -245,6 +266,7 @@ class MenuService {
             if ( $post_id instanceof \WP_Error ) {
                 return array(
                     'success' => 'error',
+                    /* translators: s: The name of the new menu item */
                     'message' => sprintf( __( 'There was an error creating "%s" menu item.', 'export-import-menu-acf-data' ), $title ),
                 );
             }
@@ -287,6 +309,7 @@ class MenuService {
 
         return array(
             'success' => true,
+            /* translators: s: Number of the imported menu items */
             'message' => sprintf( __( '%d navigation menu items successfully imported.', 'export-import-menu-acf-data' ), $count ),
         );
     }
@@ -296,6 +319,7 @@ class MenuService {
      *
      * Delete a navigation menu.
      *
+     * @param string $menu_name The name of the menu to delete.
      * @return bool|WP_Error
      */
     public static function delete_nav_menu( string $menu_name ): bool|WP_Error {

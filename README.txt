@@ -2,8 +2,8 @@
 Contributors: r1lita
 Tags: menu, menus, export, import, acf, navigation 
 Requires at least: 6.9
-Tested up to: 6.9.4
-Stable tag: 0.2.1
+Tested up to: 7.0
+Stable tag: 0.2.2
 Requires PHP: 8.0 or higher
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -27,6 +27,11 @@ Clone this repository or [download](https://github.com/rtahina/export-import-men
 * [Advanced Custom Fields (ACF®)](https://wordpress.org/plugins/advanced-custom-fields/) or [Advanced Custom Fields (ACF®) Pro](https://www.advancedcustomfields.com/pro/)
 
 == Changelog ==
+
+= 0.2.3 =
+* Updated input sanitation
+* Updated the generated filename: admin current time
+* Added docs
 
 = 0.2.1 =
 * Fixed singelton pattern
